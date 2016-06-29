@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <title>คำนวณเวลาที่ใช้ในการทำนาเกลือ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.blue-indigo.min.css">
@@ -9,6 +10,9 @@
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="icon" href="//i.imgur.com/Y6OJrQv.png"/>
+    <link rel="apple-touch-icon-precomposed" href="//i.imgur.com/Y6OJrQv.png">
+    <meta name="msapplication-TileImage" content="//i.imgur.com/Y6OJrQv.png"/>
 <style>
     .kanit{
         font-family: 'Kanit',sans-serif;
@@ -17,8 +21,7 @@
         text-align: center;
     }
     .demo-layout-transparent {
-        background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(assets/homebg.jpg);
-        background-size: cover;
+      background-color: #263238;
     }
     .demo-layout-transparent .mdl-layout__header,
     .demo-layout-transparent .mdl-layout__drawer-button {
@@ -66,24 +69,32 @@
   background:
     url('assets/raining.png') center no-repeat;
 }
-
+.demo-card-wide.mdl-card {
+  width: 320px;
+  max-width: 100%;
+}
+.demo-card-wide > .mdl-card__title {
+  color: #fff;
+  height: 176px;
+  background: url('assets/date.png');
+  background-size: cover;
+  background-color: #607D8B;
+}
+.demo-card-wide > .mdl-card__menu {
+  color: #fff;
+}
 </style>
 
 </head>
 <body>
-    <!-- Uses a transparent header that draws on top of the layout's background -->
-
-</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.2.1/math.min.js"></script>
 
 <div class="demo-layout-transparent mdl-layout mdl-js-layout">
   <header class="mdl-layout__header mdl-layout__header--transparent">
     <div class="mdl-layout__header-row">
       <div class="mdl-layout-spacer"></div>
       <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
+        <a class="mdl-navigation__link kanit" href="">ให้คำแนะนำ</a>
       </nav>
     </div>
   </header>
@@ -109,6 +120,8 @@
     <tr>
       <td>วันที่</td>
       <td>อุณหภูมิ (องศาเซลเซียส)</td>
+      <td>ความเร็วลม</td>
+      <td>ความชื้น</td>
       <td>สภาพอากาศ</td>
     </tr>
   </thead>
@@ -118,6 +131,8 @@
       <td id="temp1">
 <div style="width:100px" align="center" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
       </td>
+      <td id="wind1"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
+      <td id="humid1"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>      
       <td id="icon1"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
     </tr>
     <tr>
@@ -125,6 +140,8 @@
       <td id="temp2">
 <div style="width:100px" align="center" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
       </td>
+      <td id="wind2"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
+      <td id="humid2"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>      
       <td id="icon2"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
     </tr>
     <tr>
@@ -132,6 +149,8 @@
       <td id="temp3">
 <div style="width:100px" align="center" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
       </td>
+      <td id="wind3"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
+      <td id="humid3"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>      
       <td id="icon3"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
     </tr>
     <tr>
@@ -139,6 +158,8 @@
       <td id="temp4">
 <div style="width:100px" align="center" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
       </td>
+      <td id="wind4"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
+      <td id="humid4"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>      
       <td id="icon4"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
     </tr>
     <tr>
@@ -146,6 +167,8 @@
       <td id="temp5">
 <div style="width:100px" align="center" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
       </td>
+      <td id="wind5"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
+      <td id="humid5"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>      
       <td id="icon5"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
     </tr>
     <tr>
@@ -153,6 +176,8 @@
       <td id="temp6">
 <div style="width:100px" align="center" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
       </td>
+      <td id="wind6"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
+      <td id="humid6"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>      
       <td id="icon6"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
     </tr>
     <tr>
@@ -160,6 +185,8 @@
       <td id="temp7">
 <div style="width:100px" align="center" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
       </td>
+      <td id="wind7"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
+      <td id="humid7"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>      
       <td id="icon7"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
     </tr>
     <tr>
@@ -167,6 +194,8 @@
       <td id="temp8">
 <div style="width:100px" align="center" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
       </td>
+      <td id="wind8"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
+      <td id="humid8"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>      
       <td id="icon8"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
     </tr>
   </tbody>
@@ -175,6 +204,8 @@
     <td id="temp9">
 <div style="width:100px" align="center" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
     </td>
+      <td id="wind9"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
+      <td id="humid9"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>          
     <td id="icon9"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
   </tr>
   <tr>
@@ -183,13 +214,17 @@
     <td id="temp10">
 <div style="width:100px" align="center" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
     </td>
+      <td id="wind10"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
+      <td id="humid10"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>    
     <td id="icon10"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
   </tr>
   <tr>
-    <td>11</td>
+    <td>11</td>  
     <td id="temp11">
 <div style="width:100px" align="center" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
     </td>
+      <td id="wind11"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
+      <td id="humid11"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>      
     <td id="icon11"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
   </tr>
   <tr>
@@ -197,6 +232,8 @@
     <td id="temp12">
 <div style="width:100px" align="center" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
     </td>
+      <td id="wind12"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
+      <td id="humid12"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>    
     <td id="icon12"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
   </tr>
   <tr>
@@ -204,6 +241,8 @@
     <td id="temp13">
 <div style="width:100px" align="center" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
     </td>
+      <td id="wind13"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
+      <td id="humid13"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>    
     <td id="icon13"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
   </tr>
   <tr>
@@ -211,6 +250,8 @@
     <td id="temp14">
 <div style="width:100px" align="center" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
     </td>
+      <td id="wind14"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
+      <td id="humid14"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>    
     <td id="icon14"><div class="mdl-spinner mdl-js-spinner is-active"></div></td>
   </tr>
   <tr>
@@ -220,19 +261,35 @@
 <script src="assets/main.js"></script>
 <div id="step2" style="display:none;">
 <br><br>
-<h5 class="kanit center">2. ระดับน้ำที่เหลือในนา (เมตร)</h5>
+<h5 class="kanit center">2. ระดับน้ำที่เหลือในนา (มิลลิเมตร)</h5>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="padding-bottom:26px;">
-  <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?">
-  <label class="mdl-textfield__label kanit">ระดับน้ำ (เมตร)</label>
+  <input id="waterlevel" class="mdl-textfield__input" type="number">
+  <label class="mdl-textfield__label kanit">ระดับน้ำ (มิลลิเมตร)</label>
   <span class="mdl-textfield__error">ระบุเฉพาะตัวเลขเท่านั้น!</span>
 </div>
 <br>
-<button class="kanit mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+<button id="calculate" class="kanit mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
 เริ่มคำนวณ
 </button>
+<br><br>
+<div style="display:none" id="resultcard" class="demo-card-wide mdl-card mdl-shadow--2dp">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text kanit" style="color: #263238">ผลการคำนวณ</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    <h1 id="output" class="kanit">กำลังคำนวณ...</h1>
+  </div>
 
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fflatfact.com%2Fstem">
+  <div class="mdl-card__menu">
+    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+      <a class="material-icons" style="color:#263238">share</i>
+    </button>
+  </div>
+</a>
 </div>
 </div>
+
 <br><br>
 <div class="demo-card-square mdl-card mdl-shadow--2dp" style="margin:auto;">
   <div class="mdl-card__title mdl-card--expand">
@@ -241,13 +298,8 @@
   <div class="mdl-card__supporting-text">
     <p class="kanit">จากพยากรณ์อากาศพบว่าในช่วงนี้มีฝนตกจึงไม่แนะนำให้ทำนาเกลือในช่วงนี้</p>
   </div>
-  <div class="mdl-card__actions mdl-card--border">
-    <a class="kanit mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-      ตกลง
-    </a>
-  </div>
 </div>
-
+</div>
 
 
   </main>
